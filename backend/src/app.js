@@ -1,9 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
+import { loadJson } from "./util/load-json.js";
+import cors from "cors";
 
 const { json } = bodyParser;
 const app = express();
 const port = 9099;
+
+app.use(cors());
 
 app.use(json());
 
@@ -14,14 +18,16 @@ app.get("/schemas/workflow", (req, res) => {
   });
 });
 
-app.get("/schemas/tasks/supported", (req, res) => {
+app.get("/schemas/tasks/supported", async (req, res) => {
+  const commons = await loadJson("./src/schemas/Commons.json");
   res.json({
-    taskTypes: ["START", "END", "SCRIPT", "REST"],
+    taskTypes: commons.definitions.taskType.enum,
   });
 });
 
-app.get("/schemas/tasks/:taskType", (req, res) => {
+app.get("/schemas/tasks/:taskType", async (req, res) => {
   const taskType = req.params.taskType;
+
   res.json({
     message: `The Corresponding task type schema file, for ${taskType} will be sent as response`,
   });

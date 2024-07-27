@@ -3,16 +3,16 @@
   "type": "module",
   "version": "0.1.0",
   "description": "backend for vnoc workflow prototype",
-  "main": "main.js",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node main.js",
+    "start": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-   
   },
   "author": "Vander Santos",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "express": "^4.19.2"
   }
 }

@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "./ScriptTask.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the task"
+    },
+    "taskType": {
+      "$ref": "./Commons.json#/definitions/taskType"
+    },
+    "scriptLanguage": {
+      "enum": [
+        "BASH",
+        "PYTHON"
+      ],
+      "description": "Scripting language used."
+    },
+    "order": {
+      "type": "number",
+      "description": "Determines task execution order."
+    },
+    "scriptBaseDir": {
+      "type": "string",
+      "description": "Directory path relative to the scripts common location."
+    },
+    "script": {
+      "type": "string",
+      "description": "Full name of the script file with extension, that is present in scriptBaseDir."
+    },
+    "environmentVariables": {
+      "type": "array",
+      "description": "Environment Variables required to execute the script.",
+      "items": [
+        {
+          "$ref": "./Commons.json#/definitions/keyValuePairDef"
+        }
+      ]
+    },
+    "scriptArguments": {
+      "type": "array",
+      "description": "Input arguments for the script to run.",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "prefix": {
+              "type": "string",
+              "description": "Prefix added to each argument, note no space is added by default. e.g. -f  if prefix is '-' and name is 'f'"
+            },
+            "name": {
+              "type": "string",
+              "description": "Name of the argument"
+            },
+            "value": {
+              "type": "string",
+              "description": "Value of the argument, if value is omitted, names are passed with space as separator"
+            },
+            "separator": {
+              "type": "string",
+              "description": "Separator to be used between name and value. Default is = if not specified."
+            },
+            "order": {
+              "type": "number",
+              "description": "Order of the scriptArguments"
+            }
+          },
+          "required": [
+            "name",
+            "order"
+          ]
+        }
+      ]
+    },
+    "expectedResponse": {
+      "type": "array",
+      "description": "Expected response from the script",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "statusCode": {
+              "type": "number",
+              "description": "expected return code from the script."
+            },
+            "outputMappings": {
+              "type": "array",
+              "description": "Variables to be mapped from the response.",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "outputType": {
+                      "enum": [
+                        "STDOUT",
+                        "STDERR"
+                      ],
+                      "description": "Type of output to be mapped."
+                    },
+                    "outputMatchPattern": {
+                      "type": "string",
+                      "description": "regular expression to match a substring from the output."
+                    },
+                    "mappedVariable": {
+                      "type": "string",
+                      "description": "task variable to which the mapped value has to be assigned."
+                    }
+                  },
+                  "required": [
+                    "outputMatchPattern",
+                    "mappedVariable"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "statusCode"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "taskType",
+    "scriptLanguage",
+    "script",
+    "order",
+    "expectedResponse"
+  ]
+}

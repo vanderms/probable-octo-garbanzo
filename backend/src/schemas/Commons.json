@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "./Commons.json",
+  "definitions": {
+    "keyValuePairDef": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the header"
+        },
+        "value": {
+          "type": "string",
+          "description": "Value of the header"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ]
+    },
+    "taskType": {
+      "enum": [
+        "SCRIPT",
+        "REST",
+        "START",
+        "END"
+      ],
+      "description": "Type of the script that is supported."
+    }
+  }
+}

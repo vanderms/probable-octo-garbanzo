@@ -1,0 +1,107 @@
+openapi: 3.0.3
+info:
+  title: Swagger Workflow - OpenAPI 3.0
+  description: |-
+    This is a reference for workflow swagger, to explain the api available.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://localhost:9099
+tags:
+  - name: schema
+    description: Operations to fetch schema files.
+  - name: workflow
+    description: Operations on workflow.
+paths:
+  /schemas/workflow:
+    get:
+      tags:
+        - schema
+      responses:
+        '200':
+          description: for fetching status
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  "The Schema file of workflow, Workflow.json will be sent as response."
+  /schemas/tasks/supported:
+    get:
+      tags:
+        - schema
+      responses:
+        '200':
+          description: Responds with the type of tasks supported
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {
+                           taskTypes: ["START", "END", "SCRIPT", "REST"]
+                }
+                properties:
+                  taskTypes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/taskType'
+  /schemas/tasks/{taskType}:
+    get:
+      tags:
+        - schema
+      responses:
+        '200':
+          description: "On passing a valid task type the task schema json will be sent back"
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  "The Corresponding task type schema file, will be sent as response"
+  /workflows:
+    post:
+      tags:
+        - workflow
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Created user object"
+          required: true
+          $ref: "./Workflow.json"
+      responses:
+        '200':
+          description: "On successful creation of a workflow"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: './Workflow.json'
+    get:
+      tags:
+        - workflow
+      responses:
+        '200':
+          description: "Lists the available workflows"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './Workflow.json'
+                  properties:
+                    id:
+                      type: number
+                      example: 1
+
+
+components:
+  schemas:
+    taskType:
+      type: string
+      enum:
+        - START
+        - END
+        - REST
+        - SCRIPT

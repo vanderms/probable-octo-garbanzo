@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "./WorkflowSchema.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the workflow.",
+      "minLength": 2,
+      "maxLength": 50
+    },
+    "description": {
+      "type": "string",
+      "description": "Description explaining the purpose of workflow.",
+      "minLength": 2,
+      "maxLength": 500
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "Status of the workflow true suggests the workflow is deactivated, false as active."
+    },
+    "category": {
+      "type": "string",
+      "description": "Use this to classify workflows.",
+      "minLength": 2,
+      "maxLength": 15
+    },
+    "context": {
+      "type": "array",
+      "description": "Common parameters like server url, common http headers.",
+      "items": [
+        {
+          "$ref": "./Commons.json#/definitions/keyValuePairDef"
+        }
+      ]
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "./ScriptTask.json"
+          },
+          {
+            "$ref": "./RestTask.json"
+          },
+          {
+            "$ref": "./StartTask.json"
+          },
+          {
+            "$ref": "./EndTask.json"
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "tasks"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "./StartTask.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the task, generally named as start task.",
+      "example": "StartTask"
+    },
+    "taskType": {
+      "$ref": "./Commons.json#/definitions/taskType",
+      "example": "START"
+    },
+    "order": {
+      "type": "number",
+      "description": "defines the order in which a task should execute.",
+      "example": 1
+    },
+    "startTime": {
+      "type": "string",
+      "description": "The time at which task has been started.",
+      "example": ""
+    }
+  }
+}

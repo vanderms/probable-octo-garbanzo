@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "./EndTask.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the task, generally named as End task."
+    },
+    "taskType": {
+      "$ref": "./Commons.json#/definitions/taskType"
+    },
+    "order": {
+      "type": "number",
+      "description": "defines the order in which a task should execute."
+    },
+    "endTime": {
+      "type": "string",
+      "description": "The time at which task has completed."
+    }
+  }
+}
