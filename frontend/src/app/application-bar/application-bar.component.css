@@ -1,0 +1,9 @@
+header {
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  background-color: var(--neutra-800);
+  color: var(--neutra-200);
+  padding: 1rem;
+  font-weight: 500;
+}

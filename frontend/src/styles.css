@@ -44,9 +44,11 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: inherit;
+  font-size: inherit;
   font-weight: inherit;
 }
 
+/*Colors*/
 .hfg\:neutra-800 {
   color: var(--neutra-800);
 }
@@ -69,4 +71,29 @@ body {
 
 .hfg\:neutra-base {
   color: var(--neutra-base);
+}
+
+/*Background colors*/
+.hfg\:bg-neutra-800 {
+  background-color: var(--neutra-800);
+}
+
+.hfg\:bg-neutra-500 {
+  background-color: var(--neutra-500);
+}
+
+.hfg\:bg-neutra-200 {
+  background-color: var(--neutra-200);
+}
+
+.hfg\:bg-neutra-100 {
+  background-color: var(--neutra-100);
+}
+
+.hfg\:bg-neutra-50 {
+  background-color: var(--neutra-50);
+}
+
+.hfg\:bg-neutra-base {
+  background-color: var(--neutra-base);
 }
