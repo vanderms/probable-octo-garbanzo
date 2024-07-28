@@ -8,7 +8,12 @@ body {
 .hfg\:root {
   --font-sans: "Inter", sans-serif;
 
-  --neutra-800: #1e293b;
+  --accent: #1e40af;
+
+  --danger: #b91c1c;
+  --success: #047857;
+
+  --neutra-800: #0f172a;
   --neutra-500: #475569;
   --neutra-200: #e2e8f0;
   --neutra-100: #f1f5f9;
@@ -37,7 +42,7 @@ body {
   font-family: var(--font-sans);
 }
 
-.hfg\:root *,
+.hfg\:root *:not(.material-symbols-rounded),
 .hfg\:root *::after,
 .hfg\:root *::before {
   margin: 0;
@@ -48,52 +53,12 @@ body {
   font-weight: inherit;
 }
 
-/*Colors*/
-.hfg\:neutra-800 {
-  color: var(--neutra-800);
+.hfg\:root li {
+  list-style-type: none;
 }
 
-.hfg\:neutra-500 {
-  color: var(--neutra-500);
-}
-
-.hfg\:neutra-200 {
-  color: var(--neutra-200);
-}
-
-.hfg\:neutra-100 {
-  color: var(--neutra-100);
-}
-
-.hfg\:neutra-50 {
-  color: var(--neutra-50);
-}
-
-.hfg\:neutra-base {
-  color: var(--neutra-base);
-}
-
-/*Background colors*/
-.hfg\:bg-neutra-800 {
-  background-color: var(--neutra-800);
-}
-
-.hfg\:bg-neutra-500 {
-  background-color: var(--neutra-500);
-}
-
-.hfg\:bg-neutra-200 {
-  background-color: var(--neutra-200);
-}
-
-.hfg\:bg-neutra-100 {
-  background-color: var(--neutra-100);
-}
-
-.hfg\:bg-neutra-50 {
-  background-color: var(--neutra-50);
-}
-
-.hfg\:bg-neutra-base {
-  background-color: var(--neutra-base);
+.hfg\:root button {
+  background-color: unset;
+  border: none;
+  cursor: pointer;
 }
