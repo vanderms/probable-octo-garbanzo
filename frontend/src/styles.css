@@ -8,12 +8,16 @@ body {
 .hfg\:root {
   --font-sans: "Inter", sans-serif;
 
-  --accent: #1e40af;
+  --accent: #2563eb;
+
+  --accent-light: #7dd3fc;
 
   --danger: #b91c1c;
   --success: #047857;
 
   --neutra-800: #0f172a;
+  --neutra-700: #1e293b;
+  --neutra-600: #334155;
   --neutra-500: #475569;
   --neutra-200: #e2e8f0;
   --neutra-100: #f1f5f9;
@@ -53,12 +57,26 @@ body {
   font-weight: inherit;
 }
 
-.hfg\:root li {
+.hfg\:root li,
+.hfg\:root summary {
   list-style-type: none;
 }
 
-.hfg\:root button {
+.hfg\:root button,
+.hfg\:root summary {
   background-color: unset;
   border: none;
   cursor: pointer;
+}
+
+.hfg\:mask-rectangle {
+  mask-image: url(./assets/shapes/rectangle.svg);
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+
+.hfg\:mask-ellipse {
+  mask-image: url(./assets/shapes/ellipse.svg);
+  mask-repeat: no-repeat;
+  mask-size: contain;
 }

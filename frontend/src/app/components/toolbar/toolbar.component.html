@@ -1,31 +1,87 @@
-<section>
-  <ul>
-    <li>
-      <button>
+<section class="container" [attr.data-collapsed]="!!(collapsed$ | async)">
+  <ul class="button-list">
+    <li class="panel-control">
+      <button
+        class="button-collapse"
+        aria-label="collapse panel"
+        (click)="collapsed$.next(!collapsed$.value)"
+      >
         <span class="material-symbols-rounded" aria-hidden="true">
+          {{ (collapsed$ | async) ? "expand_content" : " collapse_content" }}
+        </span>
+      </button>
+    </li>
+    <li>
+      <button class="button">
+        <span class="material-symbols-rounded icon" aria-hidden="true">
           note_add
         </span>
         <span>New</span>
       </button>
     </li>
     <li>
-      <button aria-controls="4834e40a-4971-47f9-a50c-5651d86e9823">
-        <span class="material-symbols-rounded" aria-hidden="true">
-          file_open
-        </span>
-        <span>Load</span>
-      </button>
-      <ul id="4834e40a-4971-47f9-a50c-5651d86e9823">
-        
-      </ul>
+      <details>
+        <summary class="button" (click)="collapsed$.next(false)">
+          <span class="material-symbols-rounded icon" aria-hidden="true">
+            file_open
+          </span>
+          <span>Load</span>
+          <span
+            class="material-symbols-rounded collapse-icon"
+            aria-hidden="true"
+          >
+            remove
+          </span>
+          <span class="material-symbols-rounded expand-icon" aria-hidden="true">
+            add
+          </span>
+        </summary>
+        <ul></ul>
+      </details>
     </li>
     <li>
-      <button>
-        <span class="material-symbols-rounded" aria-hidden="true">
+      <button class="button">
+        <span class="material-symbols-rounded icon" aria-hidden="true">
           disabled_by_default
         </span>
         <span>Clear</span>
       </button>
+    </li>
+    <li>
+      <details
+        [attr.open]="(collapsed$ | async) ? undefined : ''"
+        [open]="true"
+        #details
+      >
+        <summary class="button" (click)="openTaskbar(details)">
+          <span class="material-symbols-rounded icon"> handyman </span>
+          <span>Toolbar</span>
+          <span
+            class="material-symbols-rounded collapse-icon"
+            aria-hidden="true"
+          >
+            remove
+          </span>
+          <span class="material-symbols-rounded expand-icon"> add </span>
+        </summary>
+        <ul
+          *ngIf="supportedTasks$ | async as supportedTasks"
+          class="tasks-group"
+        >
+          <ng-container *ngIf="selectedTask$ | async as selectedTask">
+            <li *ngFor="let task of supportedTasks">
+              <button
+                class="task-button"
+                [attr.aria-current]="task.task === selectedTask"
+                (click)="toggleTask(task.task)"
+              >
+                <i class="task-shape" [ngClass]="'hfg:mask-' + task.shape"></i>
+                {{ task.task }}
+              </button>
+            </li>
+          </ng-container>
+        </ul>
+      </details>
     </li>
   </ul>
 </section>

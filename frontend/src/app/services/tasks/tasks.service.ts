@@ -27,6 +27,25 @@ export class TasksService {
     BehaviorSubject<TaskSchema | undefined>
   >();
 
+  private selectedTask$ = new BehaviorSubject('__NONE__');
+
+  selectTask(task: string) {
+    this.selectedTask$.next(task);
+  }
+
+  toggleTask(task: string) {
+    if (this.selectedTask$.value !== task) this.selectTask(task);
+    else this.unselectTask();
+  }
+
+  unselectTask() {
+    this.selectedTask$.next('__NONE__');
+  }
+
+  getSelectedTask() {
+    return this.selectedTask$;
+  }
+
   private supportedTasks$ = this.http
     .get<SupportedTasks>(
       `${this.envService.getEnvironment().serverUrl}/schemas/tasks/supported`
@@ -36,11 +55,23 @@ export class TasksService {
       shareReplay({ bufferSize: 1, refCount: true })
     );
 
-  supportedTasks() {
-    return this.supportedTasks$;
+  getSupportedTasks() {
+    return this.supportedTasks$.pipe(
+      map((tasks) =>
+        tasks.map((task) => ({
+          shape: this.defaultShape(task),
+          task,
+        }))
+      )
+    );
   }
 
-  taskSchema(name: string) {
+  private defaultShape(taskName: string) {
+    if (taskName === 'START' || taskName === 'END') return 'ellipse';
+    return 'rectangle';
+  }
+
+  getTaskSchema(name: string) {
     let response$: Observable<TaskSchema | undefined>;
 
     const cache = this.taskSchemas.get(name);

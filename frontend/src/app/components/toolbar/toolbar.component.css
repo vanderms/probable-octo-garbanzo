@@ -1,0 +1,114 @@
+:host {
+  display: block;
+  position: fixed;
+  width: auto;
+  background-color: var(--neutra-800);
+  top: 4rem;
+  left: 0.5rem;
+  height: calc(100% - 4.5rem);
+  border-radius: var(--rounded-1);
+  z-index: 999;
+  opacity: 0.9;
+  backdrop-filter: blur(1px);
+}
+
+.container {
+  width: 15rem;
+  padding: 0.5rem 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.25s;
+}
+
+.container[data-collapsed="true"] {
+  width: 2.5rem;
+}
+
+.button,
+.button-collapse {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--neutra-200);
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  border-radius: var(--rounded-1);
+}
+
+.button-collapse {
+  width: auto;
+  border-radius: var(--rounded-full);
+}
+
+.button:hover,
+.button-collapse:hover {
+  background-color: var(--neutra-700);
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+.button-list {
+  display: grid;
+}
+
+.panel-control {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+[data-collapsed="true"] .panel-control {
+  justify-content: flex-start;
+}
+
+.collapse-icon,
+.expand-icon {
+  margin-left: auto;
+}
+
+.collapse-icon {
+  display: none;
+}
+
+details[open] .collapse-icon {
+  display: block;
+}
+
+details[open] .expand-icon {
+  display: none;
+}
+
+.tasks-group {
+  background-color: var(--neutra-600);
+  display: grid;
+  padding-block: 0.5rem;
+}
+
+.task-button {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  color: var(--neutra-200);
+  font-size: 0.875rem;
+  padding: 0.5rem 0.25rem 0.5rem 1.5rem;
+  border-radius: var(--rounded-1);
+}
+
+.task-button:hover {
+  background-color: var(--neutra-500);
+}
+
+.task-button[aria-current="true"] {
+  background-color: var(--accent);
+  font-weight: 500;
+}
+
+.task-shape {
+  width: 1.25rem;
+  height: 1rem;
+  background-color: var(--neutra-200);
+}
