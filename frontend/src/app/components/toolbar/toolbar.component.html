@@ -72,11 +72,11 @@
             <li *ngFor="let task of supportedTasks">
               <button
                 class="task-button"
-                [attr.aria-current]="task.task === selectedTask"
-                (click)="toggleTask(task.task)"
+                [attr.aria-current]="task.name === selectedTask.name"
+                (click)="toggleTask(task.name)"
               >
                 <i class="task-shape" [ngClass]="'hfg:mask-' + task.shape"></i>
-                {{ task.task }}
+                {{ task.name }}
               </button>
             </li>
           </ng-container>

@@ -1,0 +1,6 @@
+<ng-container *ngIf="selectedTask$ | async"></ng-container>
+<div
+  #container
+  class="container hfg:bg-grid"
+  [attr.data-cursor]="cursor$ | async"
+></div>

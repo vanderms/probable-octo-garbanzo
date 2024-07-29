@@ -27,19 +27,21 @@ export class TasksService {
     BehaviorSubject<TaskSchema | undefined>
   >();
 
-  private selectedTask$ = new BehaviorSubject('__NONE__');
+  noTaskSelected = { name: '__NONE__', shape: '__NONE__' };
+
+  private selectedTask$ = new BehaviorSubject(this.noTaskSelected);
 
   selectTask(task: string) {
-    this.selectedTask$.next(task);
+    this.selectedTask$.next({ name: task, shape: this.getTaskShape(task) });
   }
 
   toggleTask(task: string) {
-    if (this.selectedTask$.value !== task) this.selectTask(task);
+    if (this.selectedTask$.value.name !== task) this.selectTask(task);
     else this.unselectTask();
   }
 
   unselectTask() {
-    this.selectedTask$.next('__NONE__');
+    this.selectedTask$.next(this.noTaskSelected);
   }
 
   getSelectedTask() {
@@ -59,14 +61,14 @@ export class TasksService {
     return this.supportedTasks$.pipe(
       map((tasks) =>
         tasks.map((task) => ({
-          shape: this.defaultShape(task),
-          task,
+          shape: this.getTaskShape(task),
+          name: task,
         }))
       )
     );
   }
 
-  private defaultShape(taskName: string) {
+  getTaskShape(taskName: string) {
     if (taskName === 'START' || taskName === 'END') return 'ellipse';
     return 'rectangle';
   }
