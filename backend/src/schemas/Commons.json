@@ -14,18 +14,10 @@
           "description": "Value of the header"
         }
       },
-      "required": [
-        "name",
-        "value"
-      ]
+      "required": ["name", "value"]
     },
     "taskType": {
-      "enum": [
-        "SCRIPT",
-        "REST",
-        "START",
-        "END"
-      ],
+      "enum": ["START", "SCRIPT", "REST", "END"],
       "description": "Type of the script that is supported."
     }
   }

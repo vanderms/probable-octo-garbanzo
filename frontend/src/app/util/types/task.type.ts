@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 export type JSONSchemaPropertyPrimitive = {
   type: string;
@@ -34,6 +34,14 @@ export type JSONSchema = {
   type: string;
   properties: Record<string, JSONSchemaProperty>;
   required: string[] | undefined;
+};
+
+export type ExtendedControl = FormControl & {
+  __hfgExtended__: {
+    field: 'input' | 'select';
+    type: 'string' | 'number';
+    options: string[];
+  };
 };
 
 export type WorkflowTask = {
