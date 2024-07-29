@@ -1,87 +1,81 @@
 <section class="container" [attr.data-collapsed]="!!(collapsed$ | async)">
-  <ul class="button-list">
-    <li class="panel-control">
-      <button
-        class="button-collapse"
-        aria-label="collapse panel"
-        (click)="collapsed$.next(!collapsed$.value)"
+  <div class="collapse-leiaute">
+    <button
+      class="btn-collapse"
+      aria-label="collapse panel"
+      (click)="collapsed$.next(!collapsed$.value)"
+      title="Toggle sidebar"
+    >
+      <span
+        aria-hidden="true"
+        class="material-symbols-rounded"
+        data-show="collapsed"
+        >expand_content</span
       >
-        <span class="material-symbols-rounded" aria-hidden="true">
-          {{ (collapsed$ | async) ? "expand_content" : " collapse_content" }}
-        </span>
-      </button>
-    </li>
-    <li>
-      <button class="button">
+      <span
+        aria-hidden="true"
+        class="material-symbols-rounded"
+        data-show="not-collapsed"
+      >
+        collapse_content
+      </span>
+    </button>
+  </div>
+
+  <section>
+    <h2 class="section-title">
+      <span data-show="not-collapsed">ACTIONS</span>
+    </h2>
+    <div class="actions-group">
+      <button class="btn-action" title="Create new workflow">
         <span class="material-symbols-rounded icon" aria-hidden="true">
           note_add
         </span>
         <span>New</span>
       </button>
-    </li>
-    <li>
-      <details>
-        <summary class="button" (click)="collapsed$.next(false)">
-          <span class="material-symbols-rounded icon" aria-hidden="true">
-            file_open
-          </span>
-          <span>Load</span>
-          <span
-            class="material-symbols-rounded collapse-icon"
-            aria-hidden="true"
-          >
-            remove
-          </span>
-          <span class="material-symbols-rounded expand-icon" aria-hidden="true">
-            add
-          </span>
-        </summary>
-        <ul></ul>
-      </details>
-    </li>
-    <li>
-      <button class="button">
+      <button class="btn-action" title="Clear workflow">
         <span class="material-symbols-rounded icon" aria-hidden="true">
           disabled_by_default
         </span>
         <span>Clear</span>
       </button>
-    </li>
-    <li>
-      <details
-        [attr.open]="(collapsed$ | async) ? undefined : ''"
-        [open]="true"
-        #details
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">
+      <span data-show="not-collapsed">TOOLBAR</span>
+      <button
+        class="btn-action"
+        data-show="collapsed"
+        title="Open toolbar"
+        (click)="collapsed$.next(false)"
       >
-        <summary class="button" (click)="openTaskbar(details)">
-          <span class="material-symbols-rounded icon"> handyman </span>
-          <span>Toolbar</span>
-          <span
-            class="material-symbols-rounded collapse-icon"
-            aria-hidden="true"
+        <span class="material-symbols-rounded" aria-hidden="true">
+          home_repair_service
+        </span>
+      </button>
+    </h2>
+
+    <ul
+      *ngIf="supportedTasks$ | async as supportedTasks"
+      class="tasks-group"
+      data-show="not-collapsed"
+    >
+      <ng-container *ngIf="selectedTask$ | async as selectedTask">
+        <li *ngFor="let task of supportedTasks">
+          <button
+            class="btn-task"
+            [ngClass]="['hfg:mask-' + task.shape]"
+            [attr.aria-current]="task.name === selectedTask.name"
+            (click)="toggleTask(task.name)"
           >
-            remove
-          </span>
-          <span class="material-symbols-rounded expand-icon"> add </span>
-        </summary>
-        <ul
-          *ngIf="supportedTasks$ | async as supportedTasks"
-          class="tasks-group"
-        >
-          <ng-container *ngIf="selectedTask$ | async as selectedTask">
-            <li *ngFor="let task of supportedTasks">
-              <button
-                class="task-button"
-                [attr.aria-current]="task.name === selectedTask.name"
-                (click)="toggleTask(task.name)"
-              >
-                <i class="task-shape" [ngClass]="'hfg:mask-' + task.shape"></i>
-                {{ task.name }}
-              </button>
-            </li>
-          </ng-container>
-        </ul>
-      </details>
-    </li>
-  </ul>
+            <span>
+              {{ task.name }}
+            </span>
+          </button>
+        </li>
+      </ng-container>
+    </ul>
+  </section>
 </section>

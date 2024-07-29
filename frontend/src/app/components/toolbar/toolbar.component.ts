@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
-import { TasksService } from 'src/app/services/tasks/tasks.service';
+import { ToolbarService } from 'src/app/services/toolbar/toolbar.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -9,15 +9,15 @@ import { TasksService } from 'src/app/services/tasks/tasks.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
-  constructor(private tasksService: TasksService) {}
+  constructor(private toolbarService: ToolbarService) {}
 
   protected collapsed$ = new BehaviorSubject(false);
 
-  protected selectedTask$ = this.tasksService
+  protected selectedTask$ = this.toolbarService
     .getSelectedTask()
     .pipe(tap(console.log));
 
-  protected supportedTasks$ = this.tasksService.getSupportedTasks();
+  protected supportedTasks$ = this.toolbarService.getSupportedTasksWithShape();
 
   openTaskbar(details: HTMLDetailsElement) {
     if (this.collapsed$.value) {
@@ -27,6 +27,6 @@ export class ToolbarComponent {
   }
 
   protected toggleTask(task: string) {
-    this.tasksService.toggleTask(task);
+    this.toolbarService.toggleTask(task);
   }
 }

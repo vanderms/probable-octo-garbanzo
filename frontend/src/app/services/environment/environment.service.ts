@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class EnvironmentService {
-  getEnvironment() {
+  get() {
     return environment;
   }
 }

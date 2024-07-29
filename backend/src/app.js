@@ -11,11 +11,9 @@ app.use(cors());
 
 app.use(json());
 
-app.get("/schemas/workflow", (req, res) => {
-  res.json({
-    message:
-      "The Schema file of workflow, Workflow.json will be sent as response.",
-  });
+app.get("/schemas/workflow", async (req, res) => {
+  const schema = loadJson("./src/schemas/Workflow.json");
+  res.json(schema);
 });
 
 app.get("/schemas/tasks/supported", async (req, res) => {
@@ -26,11 +24,15 @@ app.get("/schemas/tasks/supported", async (req, res) => {
 });
 
 app.get("/schemas/tasks/:taskType", async (req, res) => {
-  const taskType = req.params.taskType;
+  const task = req.params.taskType;
 
-  res.json({
-    message: `The Corresponding task type schema file, for ${taskType} will be sent as response`,
-  });
+  const schema = await loadJson(
+    `./src/schemas/${
+      task.charAt(0).toUpperCase() + task.slice(1).toLowerCase()
+    }.json`
+  );
+
+  res.json(schema);
 });
 
 app.post("/workflows", (req, res) => {
@@ -38,7 +40,7 @@ app.post("/workflows", (req, res) => {
   res.status(200).json(workflow);
 });
 
-app.get("/workflows", (req, res) => {
+app.get("/workflows", async (req, res) => {
   const workflows = [
     {
       id: 1,

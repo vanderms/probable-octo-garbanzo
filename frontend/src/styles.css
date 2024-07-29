@@ -10,7 +10,7 @@ body {
 
   --accent: #2563eb;
 
-  --accent-light: #7dd3fc;
+  --accent-light: #60a5fa;
 
   --danger: #b91c1c;
   --success: #047857;
@@ -19,8 +19,9 @@ body {
   --neutra-700: #1e293b;
   --neutra-600: #334155;
   --neutra-500: #475569;
-  --neutra-200: #e2e8f0;
-  --neutra-100: #f1f5f9;
+  --neutra-200: #cbd5e1;
+  --neutra-100: #e2e8f0;
+
   --neutra-50: #f8fafc;
   --neutra-base: #fff;
 
