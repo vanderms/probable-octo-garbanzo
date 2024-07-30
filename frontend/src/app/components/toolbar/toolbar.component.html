@@ -68,7 +68,7 @@
             class="btn-task"
             [ngClass]="['hfg:mask-' + task.shape]"
             [attr.aria-current]="task.name === selectedTask.name"
-            (click)="toggleTask(task.name)"
+            (mousedown)="toggleTask(task.name)"
           >
             <span>
               {{ task.name }}
