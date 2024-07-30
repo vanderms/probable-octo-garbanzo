@@ -1,9 +1,5 @@
 <ng-container *ngIf="task$ | async as data">
-  <div
-    class="backdrop"
-    *ngIf="data.task as task"
-    [style.display]="task.form.group.valid ? 'none' : 'block'"
-  ></div>
+  <div class="backdrop" *ngIf="data.task as task"></div>
   <div class="outer-container" [attr.data-show]="!!data.task">
     <div class="container">
       <form *ngIf="data.task as task" [formGroup]="task.form.group">
