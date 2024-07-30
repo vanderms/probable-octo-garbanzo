@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
+import { SchemasService } from 'src/app/services/schemas/schemas.service';
 import { ToolbarService } from 'src/app/services/toolbar/toolbar.service';
 
 @Component({
@@ -9,7 +10,12 @@ import { ToolbarService } from 'src/app/services/toolbar/toolbar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
-  constructor(private toolbarService: ToolbarService) {}
+  constructor(
+    private toolbarService: ToolbarService,
+    private schemas: SchemasService
+  ) {
+    schemas.getSchemaByName('END').subscribe();
+  }
 
   protected collapsed$ = new BehaviorSubject(false);
 

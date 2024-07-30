@@ -8,5 +8,5 @@ export type Workflow = {
   archived?: boolean;
   category?: string;
   context?: ValuePair[];
+  operation: 'added' | 'removed' | 'init' | 'changed';
 };
-

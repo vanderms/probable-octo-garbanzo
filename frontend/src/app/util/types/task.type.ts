@@ -1,4 +1,4 @@
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 export type JSONSchemaPropertyPrimitive = {
   type: string;
@@ -10,23 +10,18 @@ export type JSONSchemaPropertyEnum = {
   description: string;
 };
 
-export type JSONSchemaRef = {
-  $ref: string;
-};
-
 export type JSONSchemaPropertyArray = {
   type: 'array';
   description: string;
-  items: Array<{
+  items: {
     properties: Record<string, JSONSchemaProperty>;
     required: string[] | undefined;
-  }>;
+  };
 };
 
 export type JSONSchemaProperty =
   | JSONSchemaPropertyPrimitive
   | JSONSchemaPropertyEnum
-  | JSONSchemaRef
   | JSONSchemaPropertyArray;
 
 export type JSONSchema = {
@@ -35,6 +30,7 @@ export type JSONSchema = {
   type: string;
   properties: Record<string, JSONSchemaProperty>;
   required: string[] | undefined;
+  definitions?: Record<string, JSONSchemaProperty>;
 };
 
 export interface WorkflowTask {
@@ -53,6 +49,8 @@ export interface WorkflowTask {
       schemaItems?: JSONSchemaPropertyArray['items'];
     }>;
   };
+  taskType: AbstractControl;
+  order: AbstractControl;
   schema: JSONSchema;
   coordinates: { x: number; y: number };
   shape: string;

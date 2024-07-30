@@ -3,4 +3,6 @@
   #container
   class="container hfg:bg-grid"
   [attr.data-cursor]="cursor$ | async"
+  (mousedown)="onContainerInteraction($event)"
+  (mouseup)="onContainerInteraction($event)"
 ></div>
