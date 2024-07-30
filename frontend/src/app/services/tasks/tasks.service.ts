@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
-import { SchemasService } from '../schemas/schemas.service';
 import {
+  AbstractControl,
+  FormArray,
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
-  Validators,
+  ValidatorFn,
 } from '@angular/forms';
-import { ExtendedControl, JSONSchema } from 'src/app/util/types/task.type';
+import {
+  JSONSchemaProperty,
+  JSONSchemaPropertyPrimitive,
+  WorkflowTask,
+} from 'src/app/util/types/task.type';
+import { SchemasService } from '../schemas/schemas.service';
+import * as Ajv from 'ajv';
 
 @Injectable({
   providedIn: 'root',
@@ -19,26 +26,111 @@ export class TasksService {
 
   createTask() {}
 
-  createFormGroup(schema: JSONSchema) {
-    const group = this.fb.group({});
+  createTaskGroup(
+    properties: Record<string, JSONSchemaProperty>,
+    required: string[]
+  ) {
+    const group = new FormGroup({});
+    const controls = Object.keys(properties).map((key) => {
+      const property = properties[key];
 
-    Object.keys(schema.properties).forEach((key) => {
-      const property = schema.properties[key];
+      if ('items' in property) {
+        const array: FormArray = new FormArray([] as any[]);
 
-      if ('type' in property && !('items' in property)) {
-        const control = new FormControl(undefined) as ExtendedControl;
+        const children = required.includes(key)
+          ? (() => {
+              const child = this.createTaskGroup(
+                property.items[0].properties,
+                property.items[0].required ?? []
+              );
 
-        control.__hfgExtended__ = {
-          type: property.type.includes('string') ? 'string' : 'number',
-          options: [],
-          field: 'input',
+              child.group.setParent(array);
+
+              return [child];
+            })()
+          : [];
+
+        array.setParent(group);
+
+        const details: WorkflowTask['form']['controls'][0] = {
+          key,
+          description: property.description,
+          control: array,
+          controlType: 'array',
+          componente: 'none',
+          componenteType: 'none',
+          componenteLabel: this.getComponentLabel(key),
+          children,
+          schemaItems: property.items,
         };
 
-        if (schema.required && schema.required.includes(key))
-          control.addValidators(Validators.required);
-
-        return group.addControl(key, new FormControl(''));
+        return details;
       }
+
+      if ('type' in property) {
+        return this.createTaskControl(
+          group,
+          key,
+          property,
+          required.includes(key)
+        );
+      }
+      throw 'not implemented';
     });
+
+    return { group, controls };
+  }
+
+  private createTaskControl(
+    group: FormGroup | FormArray,
+    key: string,
+    property: JSONSchemaPropertyPrimitive,
+    required: boolean
+  ) {
+    const details: WorkflowTask['form']['controls'][0] = {
+      key,
+      description: property.description,
+      control: new FormControl(undefined),
+      controlType: 'control',
+      componente: 'input',
+      componenteType: property.type.includes('string') ? 'string' : 'number',
+      componenteLabel: this.getComponentLabel(key),
+      children: [],
+    };
+
+    const schemaValidator = {
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      $id: key,
+      type: 'object',
+      properties: {
+        [key]: property,
+      },
+      required: [] as string[],
+    };
+
+    if (required) schemaValidator.required.push(key);
+
+    const ajv = new Ajv();
+    const validate = ajv.compile(schemaValidator);
+
+    const controlValidator: ValidatorFn = (
+      control: AbstractControl
+    ): { [key: string]: unknown } | null => {
+      const valid = validate({ [key]: control.value });
+      if (valid) return null;
+      return { schemaError: validate.errors };
+    };
+
+    details.control.setParent(group);
+
+    details.control.addValidators(controlValidator);
+
+    return details;
+  }
+
+  private getComponentLabel(str: string) {
+    const spaced = str.replace(/([A-Z])/g, ' $1');
+    const titleCase = spaced.replace(/\b\w/g, (char) => char.toUpperCase());
+    return titleCase.trim();
   }
 }

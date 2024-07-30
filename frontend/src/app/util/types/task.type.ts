@@ -18,7 +18,8 @@ export type JSONSchemaPropertyArray = {
   type: 'array';
   description: string;
   items: Array<{
-    properties: JSONSchemaProperty;
+    properties: Record<string, JSONSchemaProperty>;
+    required: string[] | undefined;
   }>;
 };
 
@@ -36,17 +37,23 @@ export type JSONSchema = {
   required: string[] | undefined;
 };
 
-export type ExtendedControl = FormControl & {
-  __hfgExtended__: {
-    field: 'input' | 'select';
-    type: 'string' | 'number';
-    options: string[];
+export interface WorkflowTask {
+  form: {
+    group: FormGroup;
+    controls: Array<{
+      key: string;
+      description: string;
+      control: AbstractControl;
+      controlType: 'group' | 'array' | 'control';
+      options?: Array<{ name: string; value: unknown }>;
+      componente: 'input' | 'select' | 'none';
+      componenteType: 'number' | 'string' | 'none';
+      componenteLabel: string;
+      children: Array<WorkflowTask['form']>;
+      schemaItems?: JSONSchemaPropertyArray['items'];
+    }>;
   };
-};
-
-export type WorkflowTask = {
-  group: FormGroup;
   schema: JSONSchema;
   coordinates: { x: number; y: number };
   shape: string;
-};
+}
