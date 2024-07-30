@@ -5,7 +5,7 @@ body {
   margin: 0;
 }
 
-.hfg\:root {
+:root {
   --font-sans: "Inter", sans-serif;
 
   --accent: #2563eb;
@@ -41,30 +41,39 @@ body {
   --rounded-full: 9999px;
 }
 
-.hfg\:root {
+app-root {
   font-size: 1rem;
   font-weight: 400;
   font-family: var(--font-sans);
 }
 
-.hfg\:root *:not(.material-symbols-rounded),
-.hfg\:root *::after,
-.hfg\:root *::before {
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: inherit;
-  font-size: inherit;
+
   font-weight: inherit;
 }
 
-.hfg\:root li,
-.hfg\:root summary {
+*:not(text),
+*::after,
+*::before {
+  font-size: inherit;
+}
+
+*:not(.material-symbols-rounded) {
+  font-family: var(--font-sans);
+}
+
+li,
+summary {
   list-style-type: none;
 }
 
-.hfg\:root button,
-.hfg\:root summary {
+button,
+summary {
   background-color: unset;
   border: none;
   cursor: pointer;

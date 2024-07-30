@@ -36,11 +36,15 @@ export class TaskBuilderService {
 
         delete (properties as Record<string, unknown>)['order'];
         delete (properties as Record<string, unknown>)['taskType'];
+        delete (properties as Record<string, unknown>)['name'];
 
         const form = this.createTaskGroup(
           properties,
           getOrElse(schema.required, [])
         );
+
+        const name = new FormControl('');
+        form.group.addControl('name', name);
 
         const order = new FormControl(undefined);
         form.group.addControl('order', order);
@@ -48,7 +52,15 @@ export class TaskBuilderService {
         const type = new FormControl(taskType);
         form.group.addControl('taskType', type);
 
-        return { form, taskType: type, order, schema, coordinates, shape };
+        return {
+          form,
+          taskType: type,
+          order,
+          name,
+          schema,
+          coordinates,
+          shape,
+        };
       })
     );
   }
@@ -206,7 +218,7 @@ export class TaskBuilderService {
       control: AbstractControl
     ): { [key: string]: unknown } | null => {
       const valid = validate({ [key]: control.value });
-      console.log(valid);
+
       if (valid) return null;
       return { ajv: validate.errors };
     };

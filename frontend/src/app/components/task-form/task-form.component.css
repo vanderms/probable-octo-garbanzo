@@ -1,0 +1,47 @@
+.outer-container {
+  display: block;
+  position: fixed;
+  width: auto;
+
+  top: 0;
+  right: 0;
+  height: 100%;
+  z-index: 1001;
+  box-shadow: -1px 0px 2px rgba(0, 0, 0, 0.16);
+  transition: right 0.25s;
+}
+
+.outer-container[data-show="false"] {
+  right: -20rem;
+}
+
+.backdrop {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  inset: 0;
+}
+
+.container {
+  width: 20rem;
+  height: 100%;
+  padding: 0.5rem 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.25s;
+  background-color: var(--neutra-50);
+  padding: 5rem 1.5rem 3rem 1.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--neutra-800);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.field {
+  font-size: 1rem;
+  padding-inline: 0.5rem;
+  color: var(--neutra-700);
+}

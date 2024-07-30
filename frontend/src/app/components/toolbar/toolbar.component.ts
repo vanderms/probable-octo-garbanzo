@@ -19,9 +19,7 @@ export class ToolbarComponent {
 
   protected collapsed$ = new BehaviorSubject(false);
 
-  protected selectedTask$ = this.toolbarService
-    .getSelectedTask()
-    .pipe(tap(console.log));
+  protected selectedTask$ = this.toolbarService.getSelectedTask();
 
   protected supportedTasks$ = this.toolbarService.getSupportedTasksWithShape();
 

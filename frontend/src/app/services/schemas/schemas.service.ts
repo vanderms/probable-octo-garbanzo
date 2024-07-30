@@ -28,7 +28,7 @@ export class SchemasService {
       schemas.forEach((schema) => {
         this.replaceReferences(schema as Record<string, unknown>, definitions);
       });
-      console.log(schemas);
+
       return schemas;
     }),
     map((schemas) => {
@@ -93,7 +93,6 @@ export class SchemasService {
       name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
     }Task.json`;
 
-    console.log(id);
     return this.getSchemaById(id);
   }
 }

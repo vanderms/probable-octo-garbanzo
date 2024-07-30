@@ -7,9 +7,18 @@ import { AppComponent } from './app.component';
 import { ApplicationBarComponent } from './components/application-bar/application-bar.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { CanvasComponent } from './components/canvas/canvas.component';
+import { TaskFormComponent } from './components/task-form/task-form.component';
+import { LetDirective } from './directives/let/let.directive';
 
 @NgModule({
-  declarations: [AppComponent, ApplicationBarComponent, ToolbarComponent, CanvasComponent],
+  declarations: [
+    AppComponent,
+    ApplicationBarComponent,
+    ToolbarComponent,
+    CanvasComponent,
+    TaskFormComponent,
+    LetDirective,
+  ],
   imports: [BrowserModule, HttpClientModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, first, Observable } from 'rxjs';
+import { BehaviorSubject, filter, first, Observable } from 'rxjs';
 import { WorkflowTask } from 'src/app/util/types/task.type';
 import { Workflow } from 'src/app/util/types/workflow.type';
 
@@ -7,7 +7,21 @@ import { Workflow } from 'src/app/util/types/workflow.type';
   providedIn: 'root',
 })
 export class WorkflowService {
-  current$ = new BehaviorSubject<null | Workflow>(null);
+  private current$ = new BehaviorSubject<null | Workflow>(null);
+
+  private currentTask$ = new BehaviorSubject<WorkflowTask | null>(null);
+
+  getWorkflow() {
+    return this.current$.asObservable();
+  }
+
+  getCurrentTask() {
+    return this.currentTask$.asObservable();
+  }
+
+  setCurrentTask(task: WorkflowTask | null) {
+    this.currentTask$.next(task);
+  }
 
   addTask(task$: Observable<WorkflowTask>) {
     if (!this.current$.value) {
@@ -32,7 +46,7 @@ export class WorkflowService {
           operation: 'added',
         };
         this.current$.next(next);
-        console.log(this.current$.value);
+        this.currentTask$.next(task);
       }
     });
   }

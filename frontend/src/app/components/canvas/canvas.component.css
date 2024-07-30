@@ -17,3 +17,46 @@
 [data-cursor="crosshair"] {
   cursor: crosshair;
 }
+
+.task-container {
+  box-sizing: content-box;
+  position: absolute;
+  z-index: 998;
+  width: 120px;
+  height: 48px;
+  padding: 49px 25px 25px 121px;
+  cursor: auto;
+}
+
+.task-name {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: var(--neutra-base);
+  border: 1px solid var(--neutra-800);
+}
+
+[data-cursor="crosshair"] .task-container {
+  cursor: not-allowed;
+}
+
+.task {
+  position: relative;
+  z-index: 2;
+}
+
+.task-text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.rectangle {
+  width: 120px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--neutra-800);
+  border-radius: var(--rounded-1);
+  background-color: var(--neutra-base);
+}

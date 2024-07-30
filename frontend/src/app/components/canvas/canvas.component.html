@@ -5,4 +5,71 @@
   [attr.data-cursor]="cursor$ | async"
   (mousedown)="onContainerInteraction($event)"
   (mouseup)="onContainerInteraction($event)"
-></div>
+>
+  <svg
+    #lines
+    id="lines-svg"
+    width="100%"
+    height="100%"
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    "
+  >
+    <defs>
+      <marker
+        id="arrowhead"
+        markerWidth="10"
+        markerHeight="7"
+        refX="0"
+        refY="3.5"
+        orient="auto"
+      >
+        <polygon points="0 0, 10 3.5, 0 7" fill="black" />
+      </marker>
+    </defs>
+  </svg>
+  <ng-container *ngIf="workflow$ | async as workflow">
+    <div
+      *ngFor="let task of workflow.tasks"
+      class="task-container"
+      [style.top]="task.coordinates.y - 48 + 'px'"
+      [style.left]="task.coordinates.x - 120 + 'px'"
+    >
+      <svg
+        width="124"
+        height="52"
+        *ngIf="task.shape === 'ellipse'"
+        class="task"
+      >
+        <ellipse
+          cx="62"
+          cy="26"
+          rx="60"
+          ry="24"
+          fill="white"
+          stroke="var(--neutra-800)"
+          stroke-width="1"
+        />
+        <text
+          class="task-text"
+          x="62"
+          y="30"
+          text-anchor="middle"
+          fill="var(--neutra-800)"
+          font-family="var(--font-sans)"
+          font-size="12"
+          *appLet="task.name.valueChanges | async as name"
+        >
+          {{ name ? name : task.taskType.value }}
+        </text>
+      </svg>
+      <span *ngIf="task.shape === 'rectangle'" class="rectangle task-text task">
+        {{ task.name.value ? task.name.value : task.taskType.value }}
+      </span>
+    </div>
+  </ng-container>
+</div>

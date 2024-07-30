@@ -1,0 +1,44 @@
+<ng-container *ngIf="task$ | async as data">
+  <div
+    class="backdrop"
+    *ngIf="data.task as task"
+    [style.display]="task.form.group.valid ? 'none' : 'block'"
+  ></div>
+  <div class="outer-container" [attr.data-show]="!!data.task">
+    <div class="container">
+      <form *ngIf="data.task as task" [formGroup]="task.form.group">
+        <dl>
+          <dt class="label">Task Type</dt>
+          <dd class="field">{{ task.taskType.value }}</dd>
+        </dl>
+
+        <div>
+          <label>
+            <span class="label">Name</span>
+            <input type="text" formControlName="name" />
+          </label>
+        </div>
+        <div>
+          <label *ngIf="workflow$ | async as workflow">
+            <span class="label">Order</span>
+            <select formControlName="order">
+              <option
+                *ngFor="let task of workflow.tasks; index as i"
+                [ngValue]="i + 1"
+              >
+                {{ i + 1 }}
+              </option>
+            </select>
+          </label>
+        </div>
+
+        <div *ngFor="let field of task.form.controls">
+          <label>
+            <span class="label">{{ field.componenteLabel }}</span>
+            <input [type]="field.componenteType" />
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-container>

@@ -49,6 +49,7 @@ export interface WorkflowTask {
       schemaItems?: JSONSchemaPropertyArray['items'];
     }>;
   };
+  name: AbstractControl;
   taskType: AbstractControl;
   order: AbstractControl;
   schema: JSONSchema;
