@@ -11,13 +11,7 @@
       "$ref": "./Commons.json#/definitions/taskType"
     },
     "method": {
-      "enum": [
-        "POST",
-        "PUT",
-        "GET",
-        "DELETE",
-        "PATCH"
-      ],
+      "enum": ["POST", "PUT", "GET", "DELETE", "PATCH"],
       "description": "HTTP method for rest call to be made."
     },
     "url": {
@@ -43,21 +37,16 @@
     "headers": {
       "type": "array",
       "description": "HTTP headers to be passed.",
-      "items": [
-        {
-          "$ref": "./Commons.json#/definitions/keyValuePairDef"
-        }
-      ]
+      "items": {
+        "$ref": "./Commons.json#/definitions/keyValuePairDef"
+      }
     },
     "input": {
       "type": "object",
       "description": "JSON request object to be passed.",
       "properties": {
         "type": {
-          "enum": [
-            "JSON",
-            "FORM_URLENCODED"
-          ]
+          "enum": ["JSON", "FORM_URLENCODED"]
         },
         "body": {
           "type": "object"
@@ -67,62 +56,43 @@
     "expectedResponse": {
       "type": "array",
       "description": "HTTP response expected.",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "statusCode": {
-              "type": "string",
-              "description": "expected http response status code"
-            },
-            "outputMappings": {
-              "type": "array",
-              "description": "Variables to be mapped from the response.",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "outputPath": {
-                      "type": "string",
-                      "description": "json path expression for the field in response json to be matched."
-                    },
-                    "outputType": {
-                      "enum": [
-                        "RESPONSE_HEADERS",
-                        "RESPONSE_BODY"
-                      ],
-                      "description": "defines what part of the response is to be mapped. Optional attribute, defaults to response body."
-                    },
-                    "mappedVariable": {
-                      "type": "string",
-                      "description": "task variable to which the mapped value has to be assigned."
-                    }
-                  },
-                  "required": [
-                    "outputPath",
-                    "mappedVariable"
-                  ]
+      "items": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "string",
+            "description": "expected http response status code"
+          },
+          "outputMappings": {
+            "type": "array",
+            "description": "Variables to be mapped from the response.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "outputPath": {
+                  "type": "string",
+                  "description": "json path expression for the field in response json to be matched."
+                },
+                "outputType": {
+                  "enum": ["RESPONSE_HEADERS", "RESPONSE_BODY"],
+                  "description": "defines what part of the response is to be mapped. Optional attribute, defaults to response body."
+                },
+                "mappedVariable": {
+                  "type": "string",
+                  "description": "task variable to which the mapped value has to be assigned."
                 }
-              ]
-            },
-            "contains": {
-              "type": "string",
-              "description": "string to be matched in the response to consider the task as success."
+              },
+              "required": ["outputPath", "mappedVariable"]
             }
           },
-          "required": [
-            "statusCode"
-          ]
-        }
-      ]
+          "contains": {
+            "type": "string",
+            "description": "string to be matched in the response to consider the task as success."
+          }
+        },
+        "required": ["statusCode"]
+      }
     }
   },
-  "required": [
-    "name",
-    "taskType",
-    "method",
-    "url",
-    "order",
-    "expectedResponse"
-  ]
+  "required": ["name", "taskType", "method", "url", "order", "expectedResponse"]
 }
