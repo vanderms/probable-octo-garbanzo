@@ -27,17 +27,35 @@
       <span data-show="not-collapsed">ACTIONS</span>
     </h2>
     <div class="actions-group">
-      <button class="btn-action" title="Create new workflow">
+      <button
+        class="btn-action"
+        title="Create new workflow"
+        (click)="createWorkflow()"
+      >
         <span class="material-symbols-rounded icon" aria-hidden="true">
           note_add
         </span>
         <span>New</span>
       </button>
-      <button class="btn-action" title="Clear workflow">
+      <button
+        class="btn-action"
+        title="Clear workflow"
+        (click)="clearWorkflow()"
+      >
         <span class="material-symbols-rounded icon" aria-hidden="true">
           disabled_by_default
         </span>
         <span>Clear</span>
+      </button>
+      <button
+        class="btn-action"
+        title="Clear workflow"
+        (click)="saveWorkflow()"
+      >
+        <span class="material-symbols-rounded icon" aria-hidden="true">
+          save
+        </span>
+        <span>Save</span>
       </button>
     </div>
   </section>
@@ -79,3 +97,47 @@
     </ul>
   </section>
 </section>
+
+<app-dialog *appLet="dialogMessage$ | async as message">
+  <aside class="dialog-container">
+    <h2>{{ message }}</h2>
+    <form method="dialog">
+      <ng-container>
+        <ng-container
+          *ngIf="
+            message === dialogMessages.clear ||
+            message === dialogMessages.create
+          "
+        >
+          <input
+            class="btn-secondary"
+            type="submit"
+            aria-label="cancel"
+            value="CANCEL"
+            name="btnCancel"
+            formnovalidate
+          />
+          <input
+            class="btn-primary"
+            type="submit"
+            aria-label="confirm"
+            value="CONFIRM"
+            name="btnConfirm"
+            formnovalidate
+          />
+        </ng-container>
+
+        <ng-container *ngIf="message === dialogMessages.save">
+          <input
+            class="btn-primary"
+            type="submit"
+            aria-label="close"
+            value="CLOSE"
+            name="btnClose"
+            formnovalidate
+          />
+        </ng-container>
+      </ng-container>
+    </form>
+  </aside>
+</app-dialog>

@@ -1,0 +1,9 @@
+dialog {
+  margin: auto;
+  border: none;
+  border-radius: var(--rounded-1);
+}
+
+dialog::backdrop {
+  color: rgba(0, 0, 0, 0.5);
+}

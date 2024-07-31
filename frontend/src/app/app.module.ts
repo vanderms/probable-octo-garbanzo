@@ -10,6 +10,7 @@ import { CanvasComponent } from './components/canvas/canvas.component';
 import { TaskFormComponent } from './components/task-form/task-form.component';
 import { LetDirective } from './directives/let/let.directive';
 import { ControlsBarComponent } from './components/controls-bar/controls-bar.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ControlsBarComponent } from './components/controls-bar/controls-bar.com
     TaskFormComponent,
     LetDirective,
     ControlsBarComponent,
+    DialogComponent,
   ],
   imports: [BrowserModule, HttpClientModule, ReactiveFormsModule],
   providers: [],

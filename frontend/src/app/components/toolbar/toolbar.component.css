@@ -107,3 +107,47 @@
 .btn-task[aria-current="true"] {
   background-color: var(--accent-light);
 }
+
+.dialog-container {
+  background-color: var(--neutra-800);
+  color: var(--neutra-50);
+  padding: 2rem 2.5rem;
+  border-radius: var(--rounded-1);
+  width: 24rem;
+}
+
+.dialog-container h2 {
+  line-height: 1.5;
+}
+
+.dialog-container form {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dialog-container input[type="submit"] {
+  height: 2.5rem;
+  width: 8rem;
+  display: grid;
+  align-items: center;
+  border: none;
+  border-radius: var(--rounded-1);
+  cursor: pointer;
+}
+
+.dialog-container input[type="submit"]:hover {
+  opacity: 0.9;
+}
+
+.dialog-container .btn-primary {
+  background-color: var(--accent);
+  color: var(--neutra-base);
+}
+
+.dialog-container .btn-secondary {
+  background-color: var(--neutra-400);
+  color: var(--neutra-800);
+}

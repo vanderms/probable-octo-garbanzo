@@ -12,7 +12,7 @@ app.use(cors());
 app.use(json());
 
 app.get("/schemas/workflow", async (req, res) => {
-  const schema = loadJson("./src/schemas/Workflow.json");
+  const schema = await loadJson("./src/schemas/Workflow.json");
   res.json(schema);
 });
 

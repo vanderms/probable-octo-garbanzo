@@ -1,6 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { combineLatest, map, shareReplay, switchMap, tap } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  of,
+  shareReplay,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
 import { getOrElse, getOrThrow } from 'src/app/util/functions/get-or-throw.fn';
 import { JSONSchema, JSONSchemaProperty } from 'src/app/util/types/task.type';
 import { EnvironmentService } from '../environment/environment.service';
@@ -14,7 +22,10 @@ export class SchemasService {
     private http: HttpClient,
     private env: EnvironmentService,
     public supportedService: SupportedTasksService
-  ) {}
+  ) {
+    //eager loading
+    this.getWorkflowSchema().pipe(take(1)).subscribe();
+  }
 
   private schemasTable$ = this.supportedService.getSupportedTasks().pipe(
     switchMap((tasks) => {
@@ -40,6 +51,27 @@ export class SchemasService {
     }),
     shareReplay({ bufferSize: 1, refCount: true })
   );
+
+  private workflowSchema$ = this.schemasTable$.pipe(
+    switchMap((table) => {
+      return combineLatest([
+        of(table),
+        this.http.get<any>(`${this.env.get().serverUrl}/schemas/workflow`),
+      ]);
+    }),
+    map(([table, schema]) => {
+      console.log(schema, table);
+      schema.properties.tasks.items.anyOf = [...table.values()];
+
+      delete schema.properties.context;
+      return schema as JSONSchema;
+    }),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
+  getWorkflowSchema() {
+    return this.workflowSchema$;
+  }
 
   private replaceReferences(
     schema: Record<string, unknown>,
