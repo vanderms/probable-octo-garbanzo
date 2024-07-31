@@ -2,18 +2,24 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import {
   BehaviorSubject,
+  combineLatest,
+  interval,
   map,
+  of,
+  switchMap,
   take,
-  tap
+  tap,
 } from 'rxjs';
+import { ControlService } from 'src/app/services/control/control.service';
 import { TaskBuilderService } from 'src/app/services/task-builder/task-builder.service';
 import { ToolbarService } from 'src/app/services/toolbar/toolbar.service';
 import { WorkflowService } from 'src/app/services/workflow/workflow.service';
 import { getOrThrow } from 'src/app/util/functions/get-or-throw.fn';
+import { Direction } from 'src/app/util/types/directions';
 import { WorkflowTask } from 'src/app/util/types/task.type';
 
 interface Point {
@@ -31,7 +37,8 @@ export class CanvasComponent {
   constructor(
     private toolbarService: ToolbarService,
     private taskBuilder: TaskBuilderService,
-    private workflowService: WorkflowService
+    private workflowService: WorkflowService,
+    private controlService: ControlService
   ) {}
 
   selectTask(task: WorkflowTask) {
@@ -46,8 +53,13 @@ export class CanvasComponent {
 
   cursor$ = new BehaviorSubject('');
 
+  currentTask$ = this.workflowService.getCurrentTask();
+
   workflow$ = this.workflowService.getWorkflow().pipe(
     tap((workflow) => {
+      if (workflow) {
+        this.clearLines();
+      }
       if (workflow && workflow.tasks.length > 1) {
         const connections: Array<[Point, Point]> = [];
 
@@ -61,7 +73,7 @@ export class CanvasComponent {
 
           connections.push([start, end]);
         }
-        this.clearLines();
+
         connections.forEach((connection) => this.connectPoints(connection));
       }
     })
@@ -178,4 +190,23 @@ export class CanvasComponent {
     defs.appendChild(marker);
     svg.appendChild(defs);
   }
+
+  protected canvasPosition$ = combineLatest([
+    of({ x: 0, y: 0 }),
+    this.controlService.getDirection(),
+  ]).pipe(
+    switchMap(([position, direction]) => {
+      if (direction === Direction.NONE) return of(position);
+      return interval(100).pipe(
+        map(() => {
+          position.x += direction.x * 10;
+          position.y += direction.y * 10;
+          if (position.x > 0) position.x = 0;
+          if (position.y > 0) position.y = 0;
+          console.log(position);
+          return position;
+        })
+      );
+    })
+  );
 }

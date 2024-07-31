@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  position: fixed;
+  height: 2.5rem;
+  width: 100%;
+  background-color: var(--neutra-700);
+  z-index: 999;
+}
+
+.btn-list {
+  display: flex;
+}
+
+.btn-item {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.btn {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--neutra-200);
+  background-color: var(--neutra-600);
+  border: 1px solid var(--neutra-700);
+  border-radius: var(--rounded-1);
+}
+
+.btn:hover {
+  background-color: var(--neutra-400);
+  color: var(--neutra-800);
+}

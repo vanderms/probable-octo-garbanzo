@@ -1,0 +1,82 @@
+<aside class="container">
+  <ul class="btn-list">
+    <li class="btn-item">
+      <button
+        class="btn"
+        title="move canvas left"
+        (mousedown)="moveCanvas(Direction.LEFT)"
+        (mouseleave)="moveCanvas(Direction.NONE)"
+        (mouseup)="moveCanvas(Direction.NONE)"
+      >
+        <span class="material-symbols-rounded btn-icon" aria-hidden="true">
+          arrow_left
+        </span>
+      </button>
+    </li>
+    <li class="btn-item">
+      <button
+        class="btn"
+        title="move canvas up"
+        (mousedown)="moveCanvas(Direction.UP)"
+        (mouseleave)="moveCanvas(Direction.NONE)"
+        (mouseup)="moveCanvas(Direction.NONE)"
+      >
+        <span class="material-symbols-rounded btn-icon" aria-hidden="true">
+          arrow_drop_up
+        </span>
+      </button>
+    </li>
+    <li class="btn-item">
+      <button
+        class="btn"
+        title="move canvas right"
+        (mousedown)="moveCanvas(Direction.RIGHT)"
+        (mouseleave)="moveCanvas(Direction.NONE)"
+        (mouseup)="moveCanvas(Direction.NONE)"
+      >
+        <span class="material-symbols-rounded btn-icon" aria-hidden="true">
+          arrow_right
+        </span>
+      </button>
+    </li>
+    <li class="btn-item">
+      <button
+        class="btn"
+        title="move canvas down"
+        (mousedown)="moveCanvas(Direction.DOWN)"
+        (mouseleave)="moveCanvas(Direction.NONE)"
+        (mouseup)="moveCanvas(Direction.NONE)"
+      >
+        <span class="material-symbols-rounded btn-icon" aria-hidden="true">
+          arrow_drop_down
+        </span>
+      </button>
+    </li>
+    <li class="btn-item">
+      <button class="btn" title="undo last action on canvas">
+        <span class="material-symbols-rounded btn-icon" aria-hidden="true">
+          undo
+        </span>
+      </button>
+    </li>
+    <li class="btn-item">
+      <button class="btn" title="redo last action on canvas">
+        <span class="material-symbols-rounded btn-icon" aria-hidden="true">
+          redo
+        </span>
+      </button>
+    </li>
+    <li class="btn-item">
+      <button
+        class="btn"
+        title="delete selected task"
+        *appLet="selectedTask$ | async as task"
+        (click)="removeTask(task)"
+      >
+        <span class="material-symbols-rounded btn-icon" aria-hidden="true">
+          delete
+        </span>
+      </button>
+    </li>
+  </ul>
+</aside>

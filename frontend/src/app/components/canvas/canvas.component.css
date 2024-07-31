@@ -2,16 +2,17 @@
   display: block;
   position: fixed;
   z-index: 1;
-  width: 100%;
-  height: calc(100vh - 5.5rem);
-  top: 5.5rem;
+  width: 100vw;
+  height: calc(100vh - 6rem);
+  top: 6rem;
   left: 0;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .container {
-  min-width: 100%;
-  min-height: 100%;
+  position: relative;
+  width: 10000px;
+  height: 5000px;
 }
 
 [data-cursor="crosshair"] {
@@ -49,6 +50,7 @@
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 16px;
+  color: var(--neutra-800);
 }
 
 .rectangle {
@@ -59,4 +61,9 @@
   border: 1px solid var(--neutra-800);
   border-radius: var(--rounded-1);
   background-color: var(--neutra-base);
+}
+
+.rectangle[data-selected="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
 }

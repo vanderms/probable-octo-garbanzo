@@ -1,6 +1,6 @@
 <ng-container *appLet="changeOrder$ | async"></ng-container>
 <ng-container *appLet="task$ | async as task">
-  <div class="backdrop" *ngIf="task"></div>
+  <div class="backdrop" *ngIf="task && task.form.group.invalid"></div>
   <div class="outer-container" [attr.data-show]="!!task">
     <section class="container">
       <header>
