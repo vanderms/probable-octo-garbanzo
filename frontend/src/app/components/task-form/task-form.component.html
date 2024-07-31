@@ -1,21 +1,35 @@
-<ng-container *ngIf="task$ | async as data">
-  <div class="backdrop" *ngIf="data.task as task"></div>
-  <div class="outer-container" [attr.data-show]="!!data.task">
-    <div class="container">
-      <form *ngIf="data.task as task" [formGroup]="task.form.group">
-        <dl>
-          <dt class="label">Task Type</dt>
-          <dd class="field">{{ task.taskType.value }}</dd>
-        </dl>
-
+<ng-container *appLet="changeOrder$ | async"></ng-container>
+<ng-container *appLet="task$ | async as task">
+  <div class="backdrop" *ngIf="task"></div>
+  <div class="outer-container" [attr.data-show]="!!task">
+    <section class="container">
+      <header>
+        <ng-container *ngIf="task">
+          <h2 class="title">
+            {{ task.taskType.value }}
+          </h2>
+          <button aria-label="close" (click)="onClose(task)">
+            <span class="material-symbols-rounded" aria-hidden="true">
+              close
+            </span>
+          </button>
+        </ng-container>
+      </header>
+      <p
+        class="error-message"
+        *ngIf="(showErrorMessage$ | async) && task?.form?.group?.invalid"
+      >
+        The form contains errors. Please correct them before closing this panel.
+      </p>
+      <form *ngIf="task" [formGroup]="task.form.group">
         <div>
-          <label>
+          <label class="field-group">
             <span class="label">Name</span>
             <input type="text" formControlName="name" />
           </label>
         </div>
         <div>
-          <label *ngIf="workflow$ | async as workflow">
+          <label *ngIf="workflow$ | async as workflow" class="field-group">
             <span class="label">Order</span>
             <select formControlName="order">
               <option
@@ -28,13 +42,92 @@
           </label>
         </div>
 
+        <ng-template #renderField let-field>
+          <div
+            *ngFor="let child of field.children"
+            [formGroup]="child.group"
+            class="child-fieldset-container"
+          >
+            <div *ngFor="let control of child.controls">
+              <label class="field-group" *ngIf="control.componente === 'input'">
+                <span class="label">{{ control.componenteLabel }}</span>
+                <input
+                  [type]="control.componenteType"
+                  [formControlName]="control.key"
+                />
+              </label>
+              <label
+                class="field-group"
+                *ngIf="control.componente === 'select'"
+              >
+                <span class="label">{{ control.componenteLabel }}</span>
+                <select [formControlName]="control.key">
+                  <option
+                    *ngFor="let option of control.options"
+                    [ngValue]="option.value"
+                  >
+                    {{ option.name }}
+                  </option>
+                </select>
+              </label>
+              <fieldset *ngIf="control.componente === 'none'">
+                <legend class="label">{{ control.componenteLabel }}</legend>
+                <div class="fieldset-container">
+                  <ng-container
+                    *ngIf="control.children.length > 0"
+                    [ngTemplateOutlet]="renderField"
+                    [ngTemplateOutletContext]="{ $implicit: control }"
+                  ></ng-container>
+                </div>
+                <button class="btn-add" (click)="control.create()">
+                  Add {{ control.componenteLabel }}
+                </button>
+              </fieldset>
+            </div>
+            <button
+              class="btn-remove"
+              *ngIf="!isRemoveDisabled(child.remove)"
+              (click)="child.remove()"
+            >
+              Remove Item
+            </button>
+          </div>
+        </ng-template>
+
         <div *ngFor="let field of task.form.controls">
-          <label>
+          <label class="field-group" *ngIf="field.componente === 'input'">
             <span class="label">{{ field.componenteLabel }}</span>
-            <input [type]="field.componenteType" />
+            <input
+              [type]="field.componenteType"
+              [formControlName]="field.key"
+            />
           </label>
+          <label class="field-group" *ngIf="field.componente === 'select'">
+            <span class="label">{{ field.componenteLabel }}</span>
+            <select [formControlName]="field.key">
+              <option
+                *ngFor="let option of field.options"
+                [ngValue]="option.value"
+              >
+                {{ option.name }}
+              </option>
+            </select>
+          </label>
+          <fieldset *ngIf="field.componente === 'none'">
+            <legend class="label">{{ field.componenteLabel }}</legend>
+            <div class="fieldset-container">
+              <ng-container
+                *ngIf="field.children.length > 0"
+                [ngTemplateOutlet]="renderField"
+                [ngTemplateOutletContext]="{ $implicit: field }"
+              ></ng-container>
+            </div>
+            <button class="btn-add" (click)="field.create()">
+              Add {{ field.componenteLabel }}
+            </button>
+          </fieldset>
         </div>
       </form>
-    </div>
+    </section>
   </div>
 </ng-container>

@@ -1,24 +1,20 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import {
   BehaviorSubject,
-  combineLatest,
   map,
-  of,
-  startWith,
   take,
-  tap,
+  tap
 } from 'rxjs';
 import { TaskBuilderService } from 'src/app/services/task-builder/task-builder.service';
 import { ToolbarService } from 'src/app/services/toolbar/toolbar.service';
 import { WorkflowService } from 'src/app/services/workflow/workflow.service';
 import { getOrThrow } from 'src/app/util/functions/get-or-throw.fn';
+import { WorkflowTask } from 'src/app/util/types/task.type';
 
 interface Point {
   x: number;
@@ -37,6 +33,10 @@ export class CanvasComponent {
     private taskBuilder: TaskBuilderService,
     private workflowService: WorkflowService
   ) {}
+
+  selectTask(task: WorkflowTask) {
+    this.workflowService.setCurrentTask(task);
+  }
 
   @ViewChild('lines') _linesRef?: ElementRef<SVGElement>;
 
@@ -155,7 +155,6 @@ export class CanvasComponent {
       svg.removeChild(svg.firstChild);
     }
 
-    // Se houver definições de marcadores (como a seta), reanexe-as.
     const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
     const marker = document.createElementNS(
       'http://www.w3.org/2000/svg',

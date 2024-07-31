@@ -33,11 +33,12 @@
     </defs>
   </svg>
   <ng-container *ngIf="workflow$ | async as workflow">
-    <div
+    <button
       *ngFor="let task of workflow.tasks"
       class="task-container"
       [style.top]="task.coordinates.y - 48 + 'px'"
       [style.left]="task.coordinates.x - 120 + 'px'"
+      (click)="selectTask(task)"
     >
       <svg
         width="124"
@@ -68,8 +69,10 @@
         </text>
       </svg>
       <span *ngIf="task.shape === 'rectangle'" class="rectangle task-text task">
-        {{ task.name.value ? task.name.value : task.taskType.value }}
+        <ng-container *appLet="task.name.valueChanges | async as name">
+          {{ name ? name : task.taskType.value }}
+        </ng-container>
       </span>
-    </div>
+    </button>
   </ng-container>
 </div>

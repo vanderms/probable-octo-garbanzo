@@ -5,6 +5,7 @@ import {
   FormControl,
   FormGroup,
   ValidatorFn,
+  Validators,
 } from '@angular/forms';
 import Ajv from 'ajv-draft-04';
 import { map, Observable } from 'rxjs';
@@ -17,13 +18,18 @@ import {
   WorkflowTask,
 } from 'src/app/util/types/task.type';
 import { SchemasService } from '../schemas/schemas.service';
-import { group } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskBuilderService {
   constructor(private schemasService: SchemasService) {}
+
+  private removeDisabledCallback = () => undefined;
+
+  isRemoveDisabled(callback: () => void) {
+    return this.removeDisabledCallback === callback;
+  }
 
   createWorkflowTask(
     taskType: string,
@@ -43,10 +49,10 @@ export class TaskBuilderService {
           getOrElse(schema.required, [])
         );
 
-        const name = new FormControl('');
+        const name = new FormControl('', Validators.required);
         form.group.addControl('name', name);
 
-        const order = new FormControl(undefined);
+        const order = new FormControl(undefined, Validators.required);
         form.group.addControl('order', order);
 
         const type = new FormControl(taskType);
@@ -83,7 +89,7 @@ export class TaskBuilderService {
       return builder.bind(this)(group, key, property, required.includes(key));
     });
 
-    return { group, controls };
+    return { group, controls, remove: this.removeDisabledCallback };
   }
 
   private createTaskEnum(
@@ -107,6 +113,7 @@ export class TaskBuilderService {
       componenteLabel: this.getComponentLabel(key),
       children: [],
       options: property.enum.map((x) => ({ name: x, value: x })),
+      create: () => undefined,
     };
 
     if ('addControl' in group) {
@@ -134,7 +141,8 @@ export class TaskBuilderService {
             property.items.properties,
             property.items.required ?? []
           );
-          child.group.setParent(array);
+          array.push(child.group);
+
           return [child];
         })()
       : [];
@@ -154,8 +162,30 @@ export class TaskBuilderService {
       componenteType: 'none',
       componenteLabel: this.getComponentLabel(key),
       children,
-      schemaItems: property.items,
+      create: () => undefined,
     };
+
+    const create = () => {
+      const child: WorkflowTask['form'] = this.createTaskGroup(
+        property.items.properties,
+        property.items.required ?? []
+      );
+
+      array.push(child.group);
+      details.children.push(child);
+
+      const remove = () => {
+        details.children = details.children.filter((x) => x !== child);
+        const index = array.controls.indexOf(child.group);
+        if (index !== -1) {
+          array.removeAt(index);
+        }
+      };
+
+      child.remove = remove;
+    };
+
+    details.create = create;
 
     return details;
   }
@@ -168,15 +198,13 @@ export class TaskBuilderService {
   ) {
     const property = _property as JSONSchemaPropertyPrimitive;
 
-    const componenteType = property.type.includes('string')
-      ? 'string'
-      : 'number';
+    const componenteType = property.type.includes('string') ? 'text' : 'number';
 
     const details: WorkflowTask['form']['controls'][0] = {
       key,
       description: property.description,
       control: new FormControl(
-        componenteType === 'string' ? '' : NaN,
+        componenteType === 'text' ? '' : NaN,
         this.createValidator(key, property, required)
       ),
       controlType: 'control',
@@ -184,7 +212,18 @@ export class TaskBuilderService {
       componenteType,
       componenteLabel: this.getComponentLabel(key),
       children: [],
+      create: () => undefined,
     };
+
+    if (componenteType === 'number') {
+      details.control.valueChanges.subscribe((value) => {
+        if (typeof value === 'string') {
+          let x = Number(value);
+          if (isNaN(x)) x = 0;
+          details.control.setValue(x, { emitEvent: false });
+        }
+      });
+    }
 
     if ('addControl' in group) {
       group.addControl(key, details.control);

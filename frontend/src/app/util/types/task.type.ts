@@ -36,6 +36,7 @@ export type JSONSchema = {
 export interface WorkflowTask {
   form: {
     group: FormGroup;
+    remove: () => void;
     controls: Array<{
       key: string;
       description: string;
@@ -43,10 +44,11 @@ export interface WorkflowTask {
       controlType: 'group' | 'array' | 'control';
       options?: Array<{ name: string; value: unknown }>;
       componente: 'input' | 'select' | 'none';
-      componenteType: 'number' | 'string' | 'none';
+      componenteType: 'number' | 'text' | 'none';
       componenteLabel: string;
       children: Array<WorkflowTask['form']>;
       schemaItems?: JSONSchemaPropertyArray['items'];
+      create: () => void;
     }>;
   };
   name: AbstractControl;

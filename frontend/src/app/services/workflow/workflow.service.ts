@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, filter, first, Observable } from 'rxjs';
+import { BehaviorSubject, first, Observable } from 'rxjs';
 import { WorkflowTask } from 'src/app/util/types/task.type';
 import { Workflow } from 'src/app/util/types/workflow.type';
 
@@ -56,7 +56,9 @@ export class WorkflowService {
       const tasks = this.current$.value.tasks;
 
       const current = tasks.indexOf(task);
-      const target = task.order.value as number;
+      const target = Number(task.order.value);
+
+      console.log(tasks);
 
       if (
         current >= 0 &&
@@ -65,9 +67,10 @@ export class WorkflowService {
         target <= tasks.length
       ) {
         tasks.splice(current, 1);
-        tasks.splice(target, 0, task);
+        tasks.splice(target - 1, 0, task);
+
         tasks.forEach((task, i) => {
-          task.order.setValue(i + 1);
+          task.order.setValue(i + 1, { emitEvent: false });
         });
 
         this.current$.next({

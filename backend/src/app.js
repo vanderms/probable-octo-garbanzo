@@ -26,11 +26,7 @@ app.get("/schemas/tasks/supported", async (req, res) => {
 app.get("/schemas/tasks/:taskType", async (req, res) => {
   const task = req.params.taskType;
 
-  const schema = await loadJson(
-    `./src/schemas/${
-      task.charAt(0).toUpperCase() + task.slice(1).toLowerCase()
-    }.json`
-  );
+  const schema = await loadJson(`./src/schemas/${task}.json`);
 
   res.json(schema);
 });
